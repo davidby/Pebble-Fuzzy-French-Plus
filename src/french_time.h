@@ -7,4 +7,4 @@
 
 void fuzzy_time(PblTm* t, char* str_line1, char* str_line2, char* str_line3);
 
-void info_lines(PblTm* t, char* str_line1);
+void date_line(PblTm* t, char* str_line);

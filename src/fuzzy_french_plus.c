@@ -31,13 +31,13 @@ typedef struct {
   char line1[LINE_BUFFER_SIZE];
   char line2[LINE_BUFFER_SIZE];
   char line3[LINE_BUFFER_SIZE];
-  char topbar[LINE_BUFFER_SIZE];
+  char datebar[LINE_BUFFER_SIZE];
 } TheTime;
 
 TextLine line1;
 TextLine line2;
 TextLine line3;
-TextLine topbar;
+TextLine datebar;
 
 static TheTime cur_time;
 static TheTime new_time;
@@ -122,10 +122,10 @@ void updateLayer(TextLine *animating_line, int line) {
 
 void update_watch(PblTm* t) {
   // Let's get the new text date
-  info_lines(t, new_time.topbar);
+  date_line(t, new_time.datebar);
 
-  // Let's update the top bar
-  if(strcmp(new_time.topbar, cur_time.topbar) != 0) text_layer_set_text(&topbar.layer[0], new_time.topbar);
+  // Let's update the date bar
+  if(strcmp(new_time.datebar, cur_time.datebar) != 0) text_layer_set_text(&datebar.layer[0], new_time.datebar);
 
   // Let's get the new text time
   fuzzy_time(t, new_time.line1, new_time.line2, new_time.line3);
@@ -187,12 +187,12 @@ void handle_init_app(AppContextRef app_ctx) {
   text_layer_set_font(&line3.layer[1], fonts_get_system_font(FONT_KEY_GOTHAM_42_LIGHT));
   text_layer_set_text_alignment(&line3.layer[1], GTextAlignmentLeft);
 
-  // top text
-  text_layer_init(&topbar.layer[0], GRect(0, 150, 144, 18));
-  text_layer_set_text_color(&topbar.layer[0], GColorWhite);
-  text_layer_set_background_color(&topbar.layer[0], GColorBlack);
-  text_layer_set_font(&topbar.layer[0], fonts_get_system_font(FONT_KEY_GOTHIC_14));
-  text_layer_set_text_alignment(&topbar.layer[0], GTextAlignmentRight);
+  // date text
+  text_layer_init(&datebar.layer[0], GRect(0, 150, 144, 18));
+  text_layer_set_text_color(&datebar.layer[0], GColorWhite);
+  text_layer_set_background_color(&datebar.layer[0], GColorBlack);
+  text_layer_set_font(&datebar.layer[0], fonts_get_system_font(FONT_KEY_GOTHIC_14));
+  text_layer_set_text_alignment(&datebar.layer[0], GTextAlignmentRight);
 
   // Ensures time is displayed immediately (will break if NULL tick event accessed).
   // (This is why it's a good idea to have a separate routine to do the update itself.)
@@ -207,7 +207,7 @@ void handle_init_app(AppContextRef app_ctx) {
   layer_add_child(&window.layer, &line2.layer[1].layer);
   layer_add_child(&window.layer, &line1.layer[0].layer);
   layer_add_child(&window.layer, &line1.layer[1].layer);
-  layer_add_child(&window.layer, &topbar.layer[0].layer);
+  layer_add_child(&window.layer, &datebar.layer[0].layer);
 }
 
 // Called once per second
