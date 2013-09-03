@@ -44,9 +44,9 @@ static TheTime new_time;
 
 static bool busy_animating_in = false;
 static bool busy_animating_out = false;
-const int line1_y = 18;
-const int line2_y = 56;
-const int line3_y = 94;
+const int line1_y = 00;
+const int line2_y = 38;
+const int line3_y = 76;
 
 
 
@@ -188,11 +188,11 @@ void handle_init_app(AppContextRef app_ctx) {
   text_layer_set_text_alignment(&line3.layer[1], GTextAlignmentLeft);
 
   // top text
-  text_layer_init(&topbar.layer[0], GRect(0, 0, 144, 18));
+  text_layer_init(&topbar.layer[0], GRect(0, 150, 144, 18));
   text_layer_set_text_color(&topbar.layer[0], GColorWhite);
   text_layer_set_background_color(&topbar.layer[0], GColorBlack);
   text_layer_set_font(&topbar.layer[0], fonts_get_system_font(FONT_KEY_GOTHIC_14));
-  text_layer_set_text_alignment(&topbar.layer[0], GTextAlignmentCenter);
+  text_layer_set_text_alignment(&topbar.layer[0], GTextAlignmentRight);
 
   // Ensures time is displayed immediately (will break if NULL tick event accessed).
   // (This is why it's a good idea to have a separate routine to do the update itself.)
