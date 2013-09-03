@@ -31,24 +31,22 @@ typedef struct {
   char line1[LINE_BUFFER_SIZE];
   char line2[LINE_BUFFER_SIZE];
   char line3[LINE_BUFFER_SIZE];
-  char topbar[LINE_BUFFER_SIZE];
-  char bottombar[LINE_BUFFER_SIZE];
+  char datebar[LINE_BUFFER_SIZE];
 } TheTime;
 
 TextLine line1;
 TextLine line2;
 TextLine line3;
-TextLine topbar;
-TextLine bottombar;
+TextLine datebar;
 
 static TheTime cur_time;
 static TheTime new_time;
 
 static bool busy_animating_in = false;
 static bool busy_animating_out = false;
-const int line1_y = 18;
-const int line2_y = 56;
-const int line3_y = 94;
+const int line1_y = 00;
+const int line2_y = 38;
+const int line3_y = 76;
 
 
 
@@ -124,12 +122,10 @@ void updateLayer(TextLine *animating_line, int line) {
 
 void update_watch(PblTm* t) {
   // Let's get the new text date
-  info_lines(t, new_time.topbar, new_time.bottombar);
+  date_line(t, new_time.datebar);
 
-  // Let's update the top bar
-  if(strcmp(new_time.topbar, cur_time.topbar) != 0) text_layer_set_text(&topbar.layer[0], new_time.topbar);
-  // Let's update the bottom bar
-  text_layer_set_text(&bottombar.layer[0], new_time.bottombar);
+  // Let's update the date bar
+  if(strcmp(new_time.datebar, cur_time.datebar) != 0) text_layer_set_text(&datebar.layer[0], new_time.datebar);
 
   // Let's get the new text time
   fuzzy_time(t, new_time.line1, new_time.line2, new_time.line3);
@@ -140,10 +136,6 @@ void update_watch(PblTm* t) {
   if(strcmp(new_time.line2, cur_time.line2) != 0) updateLayer(&line2, 2);
   // update min2 only if changed happens on
   if(strcmp(new_time.line3, cur_time.line3) != 0) updateLayer(&line3, 3);
-
-  // vibrate at o'clock from 8 to 24
-  if(t->tm_min == 0 && t->tm_sec == 0 && t->tm_hour >= 8 && t->tm_hour <= 24 ) vibes_double_pulse();
-  if(t->tm_min == 59 && t->tm_sec == 57 && t->tm_hour >= 7 && t->tm_hour <= 23 ) vibes_short_pulse();
 }
 
 // Handle the start-up of the app
@@ -195,19 +187,12 @@ void handle_init_app(AppContextRef app_ctx) {
   text_layer_set_font(&line3.layer[1], fonts_get_system_font(FONT_KEY_GOTHAM_42_LIGHT));
   text_layer_set_text_alignment(&line3.layer[1], GTextAlignmentLeft);
 
-  // top text
-  text_layer_init(&topbar.layer[0], GRect(0, 0, 144, 18));
-  text_layer_set_text_color(&topbar.layer[0], GColorWhite);
-  text_layer_set_background_color(&topbar.layer[0], GColorBlack);
-  text_layer_set_font(&topbar.layer[0], fonts_get_system_font(FONT_KEY_GOTHIC_14));
-  text_layer_set_text_alignment(&topbar.layer[0], GTextAlignmentCenter);
-
-  // bottom text
-  text_layer_init(&bottombar.layer[0], GRect(0, 150, 144, 18));
-  text_layer_set_text_color(&bottombar.layer[0], GColorWhite);
-  text_layer_set_background_color(&bottombar.layer[0], GColorBlack);
-  text_layer_set_font(&bottombar.layer[0], fonts_get_system_font(FONT_KEY_GOTHIC_14));
-  text_layer_set_text_alignment(&bottombar.layer[0], GTextAlignmentCenter);
+  // date text
+  text_layer_init(&datebar.layer[0], GRect(0, 150, 144, 18));
+  text_layer_set_text_color(&datebar.layer[0], GColorWhite);
+  text_layer_set_background_color(&datebar.layer[0], GColorBlack);
+  text_layer_set_font(&datebar.layer[0], fonts_get_system_font(FONT_KEY_GOTHIC_14));
+  text_layer_set_text_alignment(&datebar.layer[0], GTextAlignmentRight);
 
   // Ensures time is displayed immediately (will break if NULL tick event accessed).
   // (This is why it's a good idea to have a separate routine to do the update itself.)
@@ -222,8 +207,7 @@ void handle_init_app(AppContextRef app_ctx) {
   layer_add_child(&window.layer, &line2.layer[1].layer);
   layer_add_child(&window.layer, &line1.layer[0].layer);
   layer_add_child(&window.layer, &line1.layer[1].layer);
-  layer_add_child(&window.layer, &bottombar.layer[0].layer);
-  layer_add_child(&window.layer, &topbar.layer[0].layer);
+  layer_add_child(&window.layer, &datebar.layer[0].layer);
 }
 
 // Called once per second
