@@ -160,14 +160,13 @@ void fuzzy_time(PblTm* t, char* line1, char* line2, char* line3) {
 
 }
 
-void info_lines(PblTm* t, char* line1, char* line2) {
+void info_lines(PblTm* t, char* line1) {
 
   char wday[LINE_BUFFER_SIZE];
   char mday[LINE_BUFFER_SIZE];
   char mon[LINE_BUFFER_SIZE];
 
   strcpy(line1, "");
-  strcpy(line2, "");
 
 //  string_format_time(line1, LINE_BUFFER_SIZE, "%A • %e %b", t);
   mini_snprintf(wday, LINE_BUFFER_SIZE, "%s", JOURS[t->tm_wday]);
@@ -178,8 +177,6 @@ void info_lines(PblTm* t, char* line1, char* line2) {
   strcat(line1, mday);
   strcat(line1, " ");
   strcat(line1, mon);
-
-  string_format_time(line2, LINE_BUFFER_SIZE, "s-%W • j-%j • %H%M", t);
 
 }
 

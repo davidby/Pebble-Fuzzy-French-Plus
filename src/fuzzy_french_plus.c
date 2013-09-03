@@ -32,14 +32,12 @@ typedef struct {
   char line2[LINE_BUFFER_SIZE];
   char line3[LINE_BUFFER_SIZE];
   char topbar[LINE_BUFFER_SIZE];
-  char bottombar[LINE_BUFFER_SIZE];
 } TheTime;
 
 TextLine line1;
 TextLine line2;
 TextLine line3;
 TextLine topbar;
-TextLine bottombar;
 
 static TheTime cur_time;
 static TheTime new_time;
@@ -124,12 +122,10 @@ void updateLayer(TextLine *animating_line, int line) {
 
 void update_watch(PblTm* t) {
   // Let's get the new text date
-  info_lines(t, new_time.topbar, new_time.bottombar);
+  info_lines(t, new_time.topbar);
 
   // Let's update the top bar
   if(strcmp(new_time.topbar, cur_time.topbar) != 0) text_layer_set_text(&topbar.layer[0], new_time.topbar);
-  // Let's update the bottom bar
-  text_layer_set_text(&bottombar.layer[0], new_time.bottombar);
 
   // Let's get the new text time
   fuzzy_time(t, new_time.line1, new_time.line2, new_time.line3);
@@ -198,13 +194,6 @@ void handle_init_app(AppContextRef app_ctx) {
   text_layer_set_font(&topbar.layer[0], fonts_get_system_font(FONT_KEY_GOTHIC_14));
   text_layer_set_text_alignment(&topbar.layer[0], GTextAlignmentCenter);
 
-  // bottom text
-  text_layer_init(&bottombar.layer[0], GRect(0, 150, 144, 18));
-  text_layer_set_text_color(&bottombar.layer[0], GColorWhite);
-  text_layer_set_background_color(&bottombar.layer[0], GColorBlack);
-  text_layer_set_font(&bottombar.layer[0], fonts_get_system_font(FONT_KEY_GOTHIC_14));
-  text_layer_set_text_alignment(&bottombar.layer[0], GTextAlignmentCenter);
-
   // Ensures time is displayed immediately (will break if NULL tick event accessed).
   // (This is why it's a good idea to have a separate routine to do the update itself.)
 
@@ -218,7 +207,6 @@ void handle_init_app(AppContextRef app_ctx) {
   layer_add_child(&window.layer, &line2.layer[1].layer);
   layer_add_child(&window.layer, &line1.layer[0].layer);
   layer_add_child(&window.layer, &line1.layer[1].layer);
-  layer_add_child(&window.layer, &bottombar.layer[0].layer);
   layer_add_child(&window.layer, &topbar.layer[0].layer);
 }
 
