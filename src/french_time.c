@@ -22,7 +22,7 @@ static const char* const HEURES[] = {
 };
 
 static const char* const MINS[] = {
-  "pile !",
+  "pile",
   "cinq",
   "dix",
   "et quart",
@@ -160,52 +160,22 @@ void fuzzy_time(PblTm* t, char* line1, char* line2, char* line3) {
 
 }
 
-void info_lines(PblTm* t, char* line1, char* line2) {
+void date_line(PblTm* t, char* line) {
 
   char wday[LINE_BUFFER_SIZE];
   char mday[LINE_BUFFER_SIZE];
   char mon[LINE_BUFFER_SIZE];
 
-  strcpy(line1, "");
-  strcpy(line2, "");
+  strcpy(line, "");
 
 //  string_format_time(line1, LINE_BUFFER_SIZE, "%A • %e %b", t);
   mini_snprintf(wday, LINE_BUFFER_SIZE, "%s", JOURS[t->tm_wday]);
   mini_snprintf(mday, LINE_BUFFER_SIZE, "%d", t->tm_mday);
   mini_snprintf(mon, LINE_BUFFER_SIZE, "%s", MOIS[t->tm_mon]);
-  strcat(line1, wday);
-  strcat(line1, " ");
-  strcat(line1, mday);
-  strcat(line1, " ");
-  strcat(line1, mon);
-
-  string_format_time(line2, LINE_BUFFER_SIZE, "s-%W • j-%j • %H%M", t);
+  strcat(line, wday);
+  strcat(line, " ");
+  strcat(line, mday);
+  strcat(line, " ");
+  strcat(line, mon);
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
