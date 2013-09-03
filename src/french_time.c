@@ -22,7 +22,7 @@ static const char* const HEURES[] = {
 };
 
 static const char* const MINS[] = {
-  "pile !",
+  "pile",
   "cinq",
   "dix",
   "et quart",
