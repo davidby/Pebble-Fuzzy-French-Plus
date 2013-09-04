@@ -59,7 +59,7 @@ static const char* const MOIS[] = {
 
 
 
-void fuzzy_time(PblTm* t, char* line1, char* line2, char* line3) {
+void fuzzy_time(PblTm* t, char* line1, char* line2, char* line3, char* line4) {
 
   int hours = t->tm_hour;
   int minutes = t->tm_min;
@@ -67,7 +67,7 @@ void fuzzy_time(PblTm* t, char* line1, char* line2, char* line3) {
   strcpy(line1, "");
   strcpy(line2, "");
   strcpy(line3, "");
-
+  strcpy(line4, "");
 
 
   if (minutes >= 33) hours++;
