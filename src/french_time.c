@@ -140,8 +140,11 @@ void fuzzy_time(PblTm* t, char* line1, char* line2, char* line3, char* line4) {
     if(hours > 0 && hours < 12) {
         strcat(line2, STR_HEURE);
       if (hours > 1) strcat(line2, "s");
+      strcat(line3, MINS[5]); // et demi
     }
-    strcat(line3, MINS[5]); // et demi
+    else {
+      strcat(line2, MINS[5]); // et demi
+    }
   }
   else if (minutes < 38) {
     strcat(line2, STR_MOINS); // moins

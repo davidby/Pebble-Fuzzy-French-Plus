@@ -47,7 +47,7 @@ static TheTime new_time;
 static bool busy_animating_in = false;
 static bool busy_animating_out = false;
 const int line1_y = -10;
-const int line2_y = 25;
+const int line2_y = 26;
 const int line3_y = 62;
 const int line4_y = 98;
 
@@ -223,15 +223,15 @@ void handle_init_app(AppContextRef app_ctx) {
   get_time(&t);
   update_watch(&t);
 
-  layer_add_child(&window.layer, &line4.layer[0].layer);
-  layer_add_child(&window.layer, &line4.layer[1].layer);
-  layer_add_child(&window.layer, &line3.layer[0].layer);
-  layer_add_child(&window.layer, &line3.layer[1].layer);
+  layer_add_child(&window.layer, &datebar.layer[0].layer);
   layer_add_child(&window.layer, &line2.layer[0].layer);
   layer_add_child(&window.layer, &line2.layer[1].layer);
   layer_add_child(&window.layer, &line1.layer[0].layer);
   layer_add_child(&window.layer, &line1.layer[1].layer);
-  layer_add_child(&window.layer, &datebar.layer[0].layer);
+  layer_add_child(&window.layer, &line4.layer[0].layer);
+  layer_add_child(&window.layer, &line4.layer[1].layer);
+  layer_add_child(&window.layer, &line3.layer[0].layer);
+  layer_add_child(&window.layer, &line3.layer[1].layer);
 }
 
 // Called once per minute
