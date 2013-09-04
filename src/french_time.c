@@ -1,9 +1,7 @@
 #include "french_time.h"
 
 static const char* STR_HEURE = "heure";
-static const char* STR_H = " h.";
 static const char* STR_MOINS = "moins";
-static const char* STR_M = "-- ";
 
 static const char* const HEURES[] = {
   "minuit",
@@ -80,41 +78,63 @@ void fuzzy_time(PblTm* t, char* line1, char* line2, char* line3, char* line4) {
     if(hours > 0 && hours < 12) {
         strcat(line2, STR_HEURE);
       if (hours > 1) strcat(line2, "s");
+      if (minutes == 0) strcat(line3, MINS[0]); // pile
     }
-    if (minutes == 0) strcat(line3, MINS[0]); // pile !
+    else {
+      if (minutes == 0) strcat(line2, MINS[0]); // pile
+    }
   }
   else if (minutes < 8) {
     if(hours > 0 && hours < 12) {
         strcat(line2, STR_HEURE);
       if (hours > 1) strcat(line2, "s");
+      strcat(line3, MINS[1]); // cinq
     }
-    strcat(line3, MINS[1]); // cinq
+    else {
+      strcat(line2, MINS[1]); // cinq
+    }
   }
   else if (minutes < 13) {
     if(hours > 0 && hours < 12) {
         strcat(line2, STR_HEURE);
       if (hours > 1) strcat(line2, "s");
+      strcat(line3, MINS[2]); // dix
     }
-    strcat(line3, MINS[2]); // dix
+    else {
+      strcat(line2, MINS[2]); // dix
+    }
   }
   else if (minutes < 18) {
     if(hours > 0 && hours < 12) {
         strcat(line2, STR_HEURE);
       if (hours > 1) strcat(line2, "s");
+      strcat(line3, MINS[3]); // et quart
     }
-    strcat(line3, MINS[3]); // et quart
+    else {
+      strcat(line2, MINS[3]); // et quart
+    }
   }
   else if (minutes < 23) {
     if(hours > 0 && hours < 12) {
         strcat(line2, STR_HEURE);
       if (hours > 1) strcat(line2, "s");
+      strcat(line3, MINS[4]); // vingt
     }
-    strcat(line3, MINS[4]); // vingt
+    else {
+      strcat(line2, MINS[4]); // vingt
+    }
   }
   else if (minutes < 28) {
-    if(hours > 0 && hours < 12) strcat(line1, STR_H);
-    strcat(line2, MINS[4]); // vingt
-    strcat(line3, MINS[1]); // cinq
+    if(hours > 0 && hours < 12) {
+      strcat(line2, STR_HEURE);
+      if (hours > 1) strcat(line2, "s");
+      strcat(line3, MINS[4]); // vingt
+      strcat(line4, MINS[1]); // cinq
+    }
+    else {
+      strcat(line2, MINS[4]); // vingt
+      strcat(line3, MINS[1]); // cinq
+    }
   }
   else if (minutes < 33) {
     if(hours > 0 && hours < 12) {
@@ -124,30 +144,57 @@ void fuzzy_time(PblTm* t, char* line1, char* line2, char* line3, char* line4) {
     strcat(line3, MINS[5]); // et demi
   }
   else if (minutes < 38) {
-    if(hours > 0 && hours < 12) strcat(line1, STR_H);
-    strcat(line2, STR_M); // --
-    strcat(line2, MINS[4]); // vingt
-    strcat(line3, MINS[1]); // cinq
+    strcat(line2, STR_MOINS); // moins
+    strcat(line3, MINS[4]); // vingt
+    strcat(line4, MINS[1]); // cinq
   }
   else if (minutes < 43) {
-    if(hours > 0 && hours < 12) strcat(line1, STR_H);
-    strcat(line2, STR_MOINS);
-    strcat(line3, MINS[4]); // vingt
+    if(hours > 0 && hours < 12) {
+      strcat(line2, STR_HEURE);
+      if (hours > 1) strcat(line2, "s");
+      strcat(line3, STR_MOINS);
+      strcat(line4, MINS[4]); // vingt
+    }
+    else {
+      strcat(line2, STR_MOINS);
+      strcat(line3, MINS[4]); // vingt
+    }
   }
   else if (minutes < 48) {
-    if(hours > 0 && hours < 12) strcat(line1, STR_H);
-    strcat(line2, STR_MOINS);
-    strcat(line3, MINS[6]); // le quart
+    if(hours > 0 && hours < 12) {
+      strcat(line2, STR_HEURE);
+      if (hours > 1) strcat(line2, "s");
+      strcat(line3, STR_MOINS);
+      strcat(line4, MINS[6]); // le quart
+    }
+    else {
+      strcat(line2, STR_MOINS);
+      strcat(line3, MINS[6]); // le quart
+    }
   }
   else if (minutes < 53) {
-    if(hours > 0 && hours < 12) strcat(line1, STR_H);
-    strcat(line2, STR_MOINS);
-    strcat(line3, MINS[2]); // dix
+    if(hours > 0 && hours < 12) {
+      strcat(line2, STR_HEURE);
+      if (hours > 1) strcat(line2, "s");
+      strcat(line3, STR_MOINS);
+      strcat(line4, MINS[2]); // dix
+    }
+    else {
+      strcat(line2, STR_MOINS);
+      strcat(line3, MINS[2]); // dix
+    }
   }
   else if (minutes < 58) {
-    if(hours > 0 && hours < 12) strcat(line1, STR_H);
-    strcat(line2, STR_MOINS);
-    strcat(line3, MINS[1]); // cinq
+    if(hours > 0 && hours < 12) {
+      strcat(line2, STR_HEURE);
+      if (hours > 1) strcat(line2, "s");
+      strcat(line3, STR_MOINS);
+      strcat(line4, MINS[1]); // cinq
+    }
+    else {
+      strcat(line2, STR_MOINS);
+      strcat(line3, MINS[1]); // cinq
+    }
   }
   else if (minutes >= 58) {
     strcpy(line1, MINS[7]); // presque
