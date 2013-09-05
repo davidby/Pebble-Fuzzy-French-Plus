@@ -56,6 +56,40 @@ static const char* const MOIS[] = {
   "Déc."
 };
 
+static const char* const JOUR_MOIS[] = {
+  "premier",
+  "deux",
+  "trois",
+  "quatre",
+  "cinq",
+  "six",
+  "sept",
+  "huit",
+  "neuf",
+  "dix",
+  "onze",
+  "douze",
+  "treize",
+  "quatorze",
+  "quinze",
+  "seize",
+  "dix-sept",
+  "dix-huit",
+  "dix-neuf",
+  "vingt",
+  "vingt et un",
+  "vingt-deux",
+  "vingt-trois",
+  "vingt-quatre",
+  "vingt-cinq",
+  "vingt-six",
+  "vingt-sept",
+  "vingt-huit",
+  "vingt-neuf",
+  "trente",
+  "trente et un"
+};
+
 
 
 void fuzzy_time(PblTm* t, char* line1, char* line2, char* line3, char* line4) {
@@ -222,7 +256,7 @@ void date_line(PblTm* t, char* line) {
 
 //  string_format_time(line1, LINE_BUFFER_SIZE, "%A • %e %b", t);
   mini_snprintf(wday, LINE_BUFFER_SIZE, "%s", JOURS[t->tm_wday]);
-  mini_snprintf(mday, LINE_BUFFER_SIZE, "%d", t->tm_mday);
+  mini_snprintf(mday, LINE_BUFFER_SIZE, "%s", JOUR_MOIS[t->tm_mday - 1]);
   mini_snprintf(mon, LINE_BUFFER_SIZE, "%s", MOIS[t->tm_mon]);
   strcat(line, wday);
   strcat(line, " ");
