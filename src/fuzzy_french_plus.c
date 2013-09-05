@@ -31,12 +31,14 @@ typedef struct {
   char line1[LINE_BUFFER_SIZE];
   char line2[LINE_BUFFER_SIZE];
   char line3[LINE_BUFFER_SIZE];
+  char line4[LINE_BUFFER_SIZE];
   char datebar[LINE_BUFFER_SIZE];
 } TheTime;
 
 TextLine line1;
 TextLine line2;
 TextLine line3;
+TextLine line4;
 TextLine datebar;
 
 static TheTime cur_time;
@@ -44,9 +46,10 @@ static TheTime new_time;
 
 static bool busy_animating_in = false;
 static bool busy_animating_out = false;
-const int line1_y = 00;
-const int line2_y = 38;
-const int line3_y = 76;
+const int line1_y = -10;
+const int line2_y = 26;
+const int line3_y = 62;
+const int line4_y = 98;
 
 
 
@@ -60,7 +63,7 @@ void animationOutStoppedHandler(struct Animation *animation, bool finished, void
   // reset out layer to x=144
   TextLayer *outside = (TextLayer *)context;
   GRect rect = layer_get_frame(&outside->layer);
-  if (rect.origin.y == line2_y) rect.origin.x = -144;
+  if (rect.origin.y == line2_y || rect.origin.y == line4_y) rect.origin.x = -144;
   else rect.origin.x = 144;
   layer_set_frame(&outside->layer, rect);
 
@@ -78,7 +81,7 @@ void updateLayer(TextLine *animating_line, int line) {
   GRect in_rect = layer_get_frame(&outside->layer);
   GRect out_rect = layer_get_frame(&inside->layer);
 
-  if (line == 2) {
+  if (line == 2 || line == 4) {
     in_rect.origin.x += 144;
     out_rect.origin.x += 144;
   } else {
@@ -108,6 +111,10 @@ void updateLayer(TextLine *animating_line, int line) {
     text_layer_set_text(outside, new_time.line3);
     text_layer_set_text(inside, cur_time.line3);
   }
+    if (line==4){
+    text_layer_set_text(outside, new_time.line4);
+    text_layer_set_text(inside, cur_time.line4);
+  }
 
   // animate in new layer
   busy_animating_in = true;
@@ -128,7 +135,7 @@ void update_watch(PblTm* t) {
   if(strcmp(new_time.datebar, cur_time.datebar) != 0) text_layer_set_text(&datebar.layer[0], new_time.datebar);
 
   // Let's get the new text time
-  fuzzy_time(t, new_time.line1, new_time.line2, new_time.line3);
+  fuzzy_time(t, new_time.line1, new_time.line2, new_time.line3, new_time.line4);
 
   // update hour only if changed
   if(strcmp(new_time.line1, cur_time.line1) != 0) updateLayer(&line1, 1);
@@ -136,6 +143,8 @@ void update_watch(PblTm* t) {
   if(strcmp(new_time.line2, cur_time.line2) != 0) updateLayer(&line2, 2);
   // update min2 only if changed happens on
   if(strcmp(new_time.line3, cur_time.line3) != 0) updateLayer(&line3, 3);
+  // update min3 only if changed happens on
+  if(strcmp(new_time.line4, cur_time.line4) != 0) updateLayer(&line4, 4);
 }
 
 // Handle the start-up of the app
@@ -187,6 +196,19 @@ void handle_init_app(AppContextRef app_ctx) {
   text_layer_set_font(&line3.layer[1], fonts_get_system_font(FONT_KEY_GOTHAM_42_LIGHT));
   text_layer_set_text_alignment(&line3.layer[1], GTextAlignmentLeft);
 
+  // line4
+  text_layer_init(&line4.layer[0], GRect(0, line4_y, 144, 50));
+  text_layer_set_text_color(&line4.layer[0], GColorWhite);
+  text_layer_set_background_color(&line4.layer[0], GColorBlack);
+  text_layer_set_font(&line4.layer[0], fonts_get_system_font(FONT_KEY_GOTHAM_42_LIGHT));
+  text_layer_set_text_alignment(&line4.layer[0], GTextAlignmentLeft);
+
+  text_layer_init(&line4.layer[1], GRect(-144, line4_y, 144, 50));
+  text_layer_set_text_color(&line4.layer[1], GColorWhite);
+  text_layer_set_background_color(&line4.layer[1], GColorBlack);
+  text_layer_set_font(&line4.layer[1], fonts_get_system_font(FONT_KEY_GOTHAM_42_LIGHT));
+  text_layer_set_text_alignment(&line4.layer[1], GTextAlignmentLeft);
+
   // date text
   text_layer_init(&datebar.layer[0], GRect(0, 150, 144, 18));
   text_layer_set_text_color(&datebar.layer[0], GColorWhite);
@@ -201,16 +223,18 @@ void handle_init_app(AppContextRef app_ctx) {
   get_time(&t);
   update_watch(&t);
 
-  layer_add_child(&window.layer, &line3.layer[0].layer);
-  layer_add_child(&window.layer, &line3.layer[1].layer);
+  layer_add_child(&window.layer, &datebar.layer[0].layer);
   layer_add_child(&window.layer, &line2.layer[0].layer);
   layer_add_child(&window.layer, &line2.layer[1].layer);
   layer_add_child(&window.layer, &line1.layer[0].layer);
   layer_add_child(&window.layer, &line1.layer[1].layer);
-  layer_add_child(&window.layer, &datebar.layer[0].layer);
+  layer_add_child(&window.layer, &line4.layer[0].layer);
+  layer_add_child(&window.layer, &line4.layer[1].layer);
+  layer_add_child(&window.layer, &line3.layer[0].layer);
+  layer_add_child(&window.layer, &line3.layer[1].layer);
 }
 
-// Called once per second
+// Called once per minute
 void handle_minute_tick(AppContextRef ctx, PebbleTickEvent *t) {
   (void)ctx;
 
