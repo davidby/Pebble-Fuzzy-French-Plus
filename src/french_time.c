@@ -1,6 +1,7 @@
 #include "french_time.h"
 
 static const char* STR_HEURE = "heure";
+static const char* STR_H = " h.";
 static const char* STR_MOINS = "moins";
 
 static const char* const HEURES[] = {
@@ -147,6 +148,7 @@ void fuzzy_time(PblTm* t, char* line1, char* line2, char* line3, char* line4) {
     }
   }
   else if (minutes < 38) {
+    if(hours > 0 && hours < 12) strcat(line1, STR_H);
     strcat(line2, STR_MOINS); // moins
     strcat(line3, MINS[4]); // vingt
     strcat(line4, MINS[1]); // cinq
