@@ -32,28 +32,28 @@ static const char* const MINS[] = {
 };
 
 static const char* const JOURS[] = {
-  "Dimanche",
-  "Lundi",
-  "Mardi",
-  "Mercredi",
-  "Jeudi",
-  "Vendredi",
-  "Samedi"
+  "dimanche",
+  "lundi",
+  "mardi",
+  "mercredi",
+  "jeudi",
+  "vendredi",
+  "samedi"
 };
 
 static const char* const MOIS[] = {
-  "Jan.",
-  "Fév.",
-  "Mars",
-  "Avril",
-  "Mai",
-  "Juin",
-  "Juil.",
-  "Août",
-  "Sep.",
-  "Oct.",
-  "Nov.",
-  "Déc."
+  "jan.",
+  "fév.",
+  "mars",
+  "avril",
+  "mai",
+  "juin",
+  "juil.",
+  "août",
+  "sep.",
+  "oct.",
+  "nov.",
+  "déc."
 };
 
 static const char* const JOUR_MOIS[] = {
